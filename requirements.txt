@@ -1,4 +1,4 @@
-Django==3.2.6
+Flask== 2.3.2
 Topdfgen==0.0.2
 bs4
 xhtml2pdf

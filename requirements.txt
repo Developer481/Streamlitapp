@@ -4,7 +4,6 @@ bs4
 xhtml2pdf
 pdfkit
 Pillow
-comtypes
 img2pdf
 fpdf
 pandas

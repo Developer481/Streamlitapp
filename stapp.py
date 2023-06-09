@@ -59,21 +59,22 @@ def scrape_files(input_folder_path, output_folder_path):
     
 
 @st.cache(show_spinner=False)
-def scrape_api():
-    input_folder_path = st.text_input("Input Folder Path")
-    output_folder_path = st.text_input("Output Folder Path")
+def scrape_api(input_folder_path, output_folder_path):
+    scrape_files(input_folder_path, output_folder_path)
+    return {'status': 'success'}
 
-    if st.button("Scrape"):
-        scrape_files(input_folder_path, output_folder_path)
-        return {'status': 'success'}
+@app.route('/convert', methods=['GET'])
+def convert_endpoint():
+    input_folder_path = request.args.get('input_folder_path')
+    output_folder_path = request.args.get('output_folder_path')
 
-    return {'status': 'waiting'}
+    if not input_folder_path or not output_folder_path:
+        return JsonResponse({'status': 'error', 'message': 'Missing input_folder_path or output_folder_path'})
+
+    response = scrape_api(input_folder_path, output_folder_path)
+    return JsonResponse(response)
 
 
-def main():
-    st.header("API Demo")
-    response = scrape_api()
-    st.json(response)
 
 if __name__ == "__main__":
-    main()
+    app.run()

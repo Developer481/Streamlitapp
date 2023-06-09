@@ -1,0 +1,10 @@
+Django==3.2.6
+Topdfgen==0.0.2
+bs4
+xhtml2pdf
+pdfkit
+Pillow
+comtypes
+img2pdf
+fpdf
+pandas

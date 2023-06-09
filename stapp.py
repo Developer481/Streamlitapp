@@ -1,12 +1,12 @@
-import streamlit as st
+from flask import Flask, request, jsonify
 import os
 import multiprocessing
 from bs4 import BeautifulSoup
 import urllib.request
 from xhtml2pdf import pisa
 import shutil
-from django.http import JsonResponse
 
+app = Flask(__name__)
 
 def convert_to_pdf(input_file, output_folder_path):
     _, file_extension = os.path.splitext(input_file)
@@ -36,7 +36,6 @@ def convert_to_pdf(input_file, output_folder_path):
         response.close()
         os.remove(input_file)
             
-   
 
 def scrape_files(input_folder_path, output_folder_path):
     # Get a list of all files in the input folder
@@ -56,12 +55,6 @@ def scrape_files(input_folder_path, output_folder_path):
 
         for r in results:
             r.wait()
-    
-
-@st.cache(show_spinner=False)
-def scrape_api(input_folder_path, output_folder_path):
-    scrape_files(input_folder_path, output_folder_path)
-    return {'status': 'success'}
 
 @app.route('/convert', methods=['GET'])
 def convert_endpoint():
@@ -69,12 +62,10 @@ def convert_endpoint():
     output_folder_path = request.args.get('output_folder_path')
 
     if not input_folder_path or not output_folder_path:
-        return JsonResponse({'status': 'error', 'message': 'Missing input_folder_path or output_folder_path'})
+        return jsonify({'status': 'error', 'message': 'Missing input_folder_path or output_folder_path'})
 
-    response = scrape_api(input_folder_path, output_folder_path)
-    return JsonResponse(response)
-
-
+    scrape_files(input_folder_path, output_folder_path)
+    return jsonify({'status': 'success'})
 
 if __name__ == "__main__":
     app.run()

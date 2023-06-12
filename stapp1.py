@@ -67,7 +67,10 @@ def main():
     # Get input and output folder paths from the user
     input_folder_path = st.sidebar.text_input("Input Folder Path")
     output_folder_path = st.sidebar.text_input("Output Folder Path")
-    print(input_folder_path)
+    input_folder_path = os.path.normpath(input_folder_path)
+    output_folder_path = os.path.normpath(output_folder_path)
+
+
 
     # Convert files to PDF and display success message
     if st.button("Convert Files"):

@@ -67,8 +67,8 @@ def main():
     # Get input and output folder paths from the user
     input_folder_path = st.sidebar.text_input("Input Folder Path")
     output_folder_path = st.sidebar.text_input("Output Folder Path")
-    input_folder_path = os.path.normpath(input_folder_path).replace('\\\\','\\')
-    output_folder_path = os.path.normpath(output_folder_path).replace('\\\\','\\')
+    input_folder_path =  input_folder_path.replace('\\\\','\\')
+    output_folder_path = output_folder_path.replace('\\\\','\\')
 
 
 

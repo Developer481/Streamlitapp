@@ -92,6 +92,9 @@ def main():
                 new_dir_path = dir_path.replace('/', '_')
                 os.rename(dir_path, new_dir_path)
 
+        # Print the extracted folder path for debugging
+        print("Extracted Folder Path:", extracted_folder_path)
+
         # Convert files to PDF using the extracted folder
         scrape_files(extracted_folder_path, output_folder_path)
 
@@ -107,8 +110,6 @@ def main():
             for file in converted_files:
                 file_path = os.path.join(output_folder_path, file)
                 st.write(file_path)
-
-
         st.success("Files converted successfully!")
 if __name__ == '__main__':
     main()

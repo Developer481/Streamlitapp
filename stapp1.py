@@ -64,18 +64,29 @@ def scrape_files(input_folder_path, output_folder_path):
 def main():
     st.title("File Conversion App")
 
-    # Get input and output folder paths from the user
-    input_folder_path = st.sidebar.text_input("Input Folder Path")
+    # Get input file and output folder path from the user
+    input_file = st.sidebar.file_uploader("Input File", type=[".mhtml", ".html", ".htm", ".igs", ".pdf"])
     output_folder_path = st.sidebar.text_input("Output Folder Path")
-    input_folder_path =  input_folder_path.replace('\\\\','\\')
-    output_folder_path = output_folder_path.replace('\\\\','\\')
+    output_folder_path = output_folder_path.replace('\\\\', '\\')
 
+    # Convert file to PDF and display success message
+    if st.button("Convert File") and input_file is not None:
+        # Create a temporary folder to store the uploaded file
+        temp_folder_path = "/path/to/temp/folder"  # Replace with your temporary folder path
+        os.makedirs(temp_folder_path, exist_ok=True)
 
+        # Save the uploaded file to the temporary folder
+        temp_file_path = os.path.join(temp_folder_path, "uploaded_file")
+        with open(temp_file_path, "wb") as f:
+            f.write(input_file.getvalue())
 
-    # Convert files to PDF and display success message
-    if st.button("Convert Files"):
-        scrape_files(input_folder_path, output_folder_path)
-        st.success("Files converted successfully!")
+        # Convert the file to PDF using the temporary file
+        convert_to_pdf(temp_file_path, output_folder_path)
+
+        # Remove the temporary folder
+        shutil.rmtree(temp_folder_path)
+
+        st.success("File converted successfully!")
 
 if __name__ == '__main__':
     main()
